@@ -54,8 +54,8 @@ export default function Home() {
             <div className="text-center w-full" key={animationKey}>
               <div className="container">
                 {/* Large Logo */}
-                <h1 className="mb-6 flex justify-center">
-                  <svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" style={{ animation: 'shine 1s ease-out 5s forwards' }}>
+                <h1 className="mb-6 flex justify-center select-none">
+                  <svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" style={{ animation: 'shine 1s ease-out 5s forwards' }} className="select-none">
                     {/* Stroke outline layer */}
                     <text 
                       x="150" 
@@ -64,7 +64,7 @@ export default function Home() {
                       fontWeight="900" 
                       textAnchor="middle"
                       fontFamily="var(--font-poppins), Poppins, sans-serif"
-                      className="svg-text-animate"
+                      className="svg-text-animate select-none"
                       fill="none"
                     >
                       JvT
@@ -77,7 +77,7 @@ export default function Home() {
                       fontWeight="900" 
                       textAnchor="middle"
                       fontFamily="var(--font-poppins), Poppins, sans-serif"
-                      className="svg-text-fill"
+                      className="svg-text-fill select-none"
                     >
                       JvT
                     </text>
@@ -97,7 +97,7 @@ export default function Home() {
                 </h2>
                 
                 {/* Description */}
-                <p className="text-xl text-[#E0E0E0] leading-relaxed mx-auto">
+                <div className="text-xl text-[#E0E0E0] leading-relaxed mx-auto">
                   <TextType 
                     text={t.description}
                     typingSpeed={50}
@@ -108,22 +108,22 @@ export default function Home() {
                     className="text-xl text-[#E0E0E0]"
                     hideCursorWhileTyping={false}
                   />
-                </p>
+                </div>
               </div>
             </div>
           ) : (
             <div className="text-center w-full">
               <div className="container">
                 {/* Static placeholder to prevent layout shift */}
-                <h1 className="mb-6 flex justify-center text-[120px] font-black text-[#AA61FF]" style={{ fontFamily: 'var(--font-poppins), Poppins, sans-serif', lineHeight: '150px' }}>
+                <h1 className="mb-6 flex justify-center text-[120px] font-black text-[#AA61FF] select-none" style={{ fontFamily: 'var(--font-poppins), Poppins, sans-serif', lineHeight: '150px' }}>
                   JvT
                 </h1>
                 <h2 className="text-3xl font-bold text-white mb-4">
                   {t.greeting}
                 </h2>
-                <p className="text-xl text-[#E0E0E0] leading-relaxed mx-auto">
+                <div className="text-xl text-[#E0E0E0] leading-relaxed mx-auto">
                   {t.description}
-                </p>
+                </div>
               </div>
             </div>
           )}

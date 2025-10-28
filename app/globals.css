@@ -48,6 +48,41 @@ body {
   }
 }
 
+/* Header Link Border Animation */
+@keyframes borderGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.nav-link-border {
+  position: relative;
+}
+
+.nav-link-border::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.nav-link-border:hover::after {
+  transform: scaleX(1);
+}
+
+.nav-link-border.active::after {
+  transform: scaleX(1);
+}
+
 /* Project Card Styles */
 .project-card {
   transition: transform 0.3s ease;

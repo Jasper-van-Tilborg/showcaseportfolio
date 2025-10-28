@@ -44,14 +44,12 @@ export default function About() {
                 <div className="col-span-12 grid grid-cols-12 gap-8 mb-20">
                   {/* Profile Image - Left Side */}
                   <div className="col-span-4">
-                <div className="bg-[#1a1a2e] rounded-3xl aspect-[3/4] flex items-center justify-center border border-white/10">
-                  {/* Placeholder for profile image */}
-                  <div className="text-[#AA61FF] text-6xl opacity-20">
-                    <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <line x1="40" y1="40" x2="160" y2="160" stroke="currentColor" strokeWidth="2"/>
-                      <line x1="160" y1="40" x2="40" y2="160" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                  </div>
+                <div className="bg-[#1a1a2e] rounded-3xl aspect-[3/4] overflow-hidden border border-white/10">
+                  <img 
+                    src="/images/image portfolio.jpg" 
+                    alt="Jasper van Tilborg"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
 

@@ -129,10 +129,8 @@ export default function Projects() {
                 <FadeInOnScroll key={project.id} delay={index * 100} className="col-span-12 md:col-span-6">
                   <div className="project-card group cursor-pointer">
                     <a 
-                      href={project.link || '#'} 
+                      href={`/projects/${project.id === 1 ? 'k-imprint' : 'quality-lodgings'}`}
                       className="block"
-                      target={project.link ? '_blank' : undefined}
-                      rel={project.link ? 'noopener noreferrer' : undefined}
                     >
                       {/* Project Card */}
                       <div 

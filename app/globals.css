@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+:root {
+  --background: #1a1a2e;
+  --foreground: #ffffff;
+  --accent: #aa61ff;
+  --text-secondary: #e0e0e0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-text-secondary: var(--text-secondary);
+  --font-sans: var(--font-poppins);
+}
+
+html {
+  font-family: var(--font-poppins), "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Hide scrollbar for all browsers */
+html::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins), "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Prevent FOUC by ensuring font is loaded */
+@supports (font-display: block) {
+  body {
+    font-display: block;
+  }
+}
+
+/* Project Card Styles */
+.project-card {
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Galaxy Background with Purple Glow */
+.galaxy-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      ellipse at 20% 30%,
+      rgba(170, 97, 255, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 80% 70%,
+      rgba(170, 97, 255, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(170, 97, 255, 0.1) 0%,
+      transparent 60%
+    );
+  background-color: #0a0a1e;
+  z-index: -2;
+}
+
+/* Animated Purple Glow Effect */
+.purple-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      circle at 30% 40%,
+      rgba(170, 97, 255, 0.2) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba(170, 97, 255, 0.15) 0%,
+      transparent 40%
+    );
+  animation: glowPulse 8s ease-in-out infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* Stars Effect */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeIn 1s ease-out forwards;
+  opacity: 0;
+}
+
+.fade-in-up-delay-1 {
+  animation: fadeIn 1s ease-out 0.5s forwards;
+  opacity: 0;
+}
+
+.fade-in-up-delay-2 {
+  animation: fadeIn 1s ease-out 1s forwards;
+  opacity: 0;
+}
+
+/* SVG Text Stroke Animation */
+@keyframes drawStroke {
+  0% {
+    stroke-dashoffset: 600;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fillUp {
+  0% {
+    clip-path: inset(100% 0 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.svg-text-animate {
+  stroke: #aa61ff;
+  stroke-width: 3;
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  fill: none;
+  animation: drawStroke 4.5s linear 1s forwards;
+}
+
+.svg-text-fill {
+  fill: #aa61ff;
+  clip-path: inset(100% 0 0 0);
+  opacity: 0;
+  animation: fillUp 2.25s ease-out 3.25s forwards,
+    fadeInFill 0.1s linear 3.25s forwards;
+}
+
+@keyframes fadeInFill {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes shine {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.5) drop-shadow(0 0 20px rgba(170, 97, 255, 0.8));
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+.shine-effect {
+  animation: shine 1s ease-out 5s forwards !important;
+}
+
+/* Custom grid system for 1440px width with 12 columns of 80px each */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 120px; /* (1440 - 1200) / 2 = 120px side margins */
+}
+
+/* Content container for About and Projects pages with more side margins */
+.content-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 240px; /* More padding for content pages, starts between JvT logo and Home link */
+}
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 100px);
+  gap: 0;
+  max-width: 1200px; /* 12 * 100px */
+  margin: 0 auto;
+}

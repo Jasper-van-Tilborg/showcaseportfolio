@@ -37,9 +37,22 @@ export default function ProjectList({ projects, onEdit, onDelete }: ProjectListP
                 />
               </div>
             )}
-            <h3 className="text-white text-[20px] font-semibold mb-2">
-              {project.title}
-            </h3>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-white text-[20px] font-semibold">
+                {project.title}
+              </h3>
+              {project.status === 'in-progress' && (
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold bg-[#AA61FF]/20 text-[#AA61FF] border border-[#AA61FF]/40">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#AA61FF] animate-pulse"></span>
+                  In ontwikkeling
+                </span>
+              )}
+              {project.status === 'coming-soon' && (
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold bg-[#AA61FF]/20 text-[#AA61FF] border border-[#AA61FF]/40">
+                  Binnenkort
+                </span>
+              )}
+            </div>
             <p className="text-[#E0E0E0] text-sm line-clamp-2">
               {project.description.nl}
             </p>
@@ -64,4 +77,6 @@ export default function ProjectList({ projects, onEdit, onDelete }: ProjectListP
     </div>
   );
 }
+
+
 

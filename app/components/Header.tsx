@@ -14,13 +14,11 @@ interface HeaderProps {
 
 const translations = {
   nl: {
-    home: 'Home',
     aboutMe: 'Over Mij',
     projects: 'Projecten',
     contactMe: 'Contact',
   },
   en: {
-    home: 'Home',
     aboutMe: 'About Me',
     projects: 'Projects',
     contactMe: 'Contact Me',
@@ -33,29 +31,19 @@ export default function Header({ language, setLanguage, hasLoadedOnce, currentPa
   return (
     <header className="absolute top-[50px] left-0 right-0 z-20">
       <div className="container">
-        <div className="flex items-center justify-between text-[20px] font-semibold">
-          {/* Logo */}
-          <div className="text-[#AA61FF] font-black shrink-0 shine-effect">
+        <div className="grid grid-cols-3 items-center text-[20px] font-semibold">
+          {/* Logo - Left */}
+          <div className="shrink-0 justify-self-start">
             <a 
               href="/" 
-              className="text-[#AA61FF] font-black text-[20px] select-none cursor-pointer transition-all duration-300 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(170,97,255,0.8)] inline-block"
+              className="text-[#AA61FF] font-black text-[20px] select-none cursor-pointer transition-all duration-300 hover:scale-110 hover:drop-shadow-[0_0_12px_rgba(170,97,255,0.8)] inline-block shine-effect"
             >
               JvT
             </a>
           </div>
           
-          {/* Navigation */}
-          <nav className="flex items-center justify-center space-x-[75px] flex-1">
-            <a 
-              href="/" 
-              className={`nav-link-border pb-[2px] transition-all duration-300 whitespace-nowrap hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(170,97,255,0.6)] ${
-                currentPage === 'home' 
-                  ? 'text-[#AA61FF] shine-effect scale-105 drop-shadow-[0_0_8px_rgba(170,97,255,0.6)] active' 
-                  : 'text-white hover:text-[#AA61FF]'
-              }`}
-            >
-              <span className={`font-semibold text-[20px] ${currentPage === 'home' ? 'text-[#AA61FF]' : 'text-white'}`}>{t.home}</span>
-            </a>
+          {/* Navigation - Center (Projecten centered) */}
+          <nav className="flex items-center justify-center space-x-[75px]">
             <a 
               href="/about" 
               className={`nav-link-border pb-[2px] transition-all duration-300 whitespace-nowrap hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(170,97,255,0.6)] ${
@@ -88,8 +76,8 @@ export default function Header({ language, setLanguage, hasLoadedOnce, currentPa
             </a>
           </nav>
           
-          {/* Language Switcher */}
-          <div className="flex items-center space-x-1 shrink-0">
+          {/* Language Switcher - Right */}
+          <div className="flex items-center space-x-1 shrink-0 justify-self-end">
             <button 
               onClick={() => setLanguage('en')}
               className={`nav-link-border transition-all duration-300 pb-[2px] font-semibold text-[20px] hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(170,97,255,0.6)] ${

@@ -17,6 +17,8 @@ export default function ProjectForm({ project, onSave, onCancel }: ProjectFormPr
     image: '',
     images: [],
     link: '',
+    figmaLink: '',
+    githubLink: '',
     technologies: [],
     role: { nl: '', en: '' },
     year: '',
@@ -31,6 +33,7 @@ export default function ProjectForm({ project, onSave, onCancel }: ProjectFormPr
   const [newTechnology, setNewTechnology] = useState('');
   const [newImage, setNewImage] = useState('');
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (project) {
@@ -99,6 +102,42 @@ export default function ProjectForm({ project, onSave, onCancel }: ProjectFormPr
       ...prev,
       images: prev.images?.filter((_, i) => i !== index) || [],
     }));
+  };
+
+  const handleFileUpload = async (file: File, isMainImage: boolean = false) => {
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        alert(error.error || 'Fout bij uploaden van bestand');
+        return;
+      }
+
+      const data = await response.json();
+      const imageUrl = data.url;
+
+      if (isMainImage) {
+        handleChange('image', imageUrl);
+      } else {
+        setFormData(prev => ({
+          ...prev,
+          images: [...(prev.images || []), imageUrl],
+        }));
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Fout bij uploaden van bestand');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -197,34 +236,71 @@ export default function ProjectForm({ project, onSave, onCancel }: ProjectFormPr
 
       {/* Image */}
       <div>
-        <label className="block text-white font-semibold mb-2">Hoofdafbeelding URL</label>
-        <input
-          type="text"
-          value={formData.image || ''}
-          onChange={(e) => handleChange('image', e.target.value)}
-          className="w-full px-4 py-2 bg-[#0a0a1e] border border-[#AA61FF]/30 rounded-lg text-white focus:outline-none focus:border-[#AA61FF]"
-        />
+        <label className="block text-white font-semibold mb-2">Hoofdafbeelding</label>
+        <div className="space-y-2">
+          <input
+            type="text"
+            value={formData.image || ''}
+            onChange={(e) => handleChange('image', e.target.value)}
+            placeholder="URL of upload bestand"
+            className="w-full px-4 py-2 bg-[#0a0a1e] border border-[#AA61FF]/30 rounded-lg text-white focus:outline-none focus:border-[#AA61FF]"
+          />
+          <div className="flex items-center gap-2">
+            <label className="px-4 py-2 bg-[#AA61FF] text-white rounded-lg hover:bg-[#8844FF] transition-colors cursor-pointer text-center">
+              {uploading ? 'Uploaden...' : 'Upload Bestand'}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    handleFileUpload(file, true);
+                  }
+                }}
+                disabled={uploading}
+              />
+            </label>
+          </div>
+        </div>
       </div>
 
       {/* Images Array */}
       <div>
         <label className="block text-white font-semibold mb-2">Extra Afbeeldingen</label>
-        <div className="flex gap-2 mb-2">
-          <input
-            type="text"
-            value={newImage}
-            onChange={(e) => setNewImage(e.target.value)}
-            placeholder="Afbeelding URL"
-            className="flex-1 px-4 py-2 bg-[#0a0a1e] border border-[#AA61FF]/30 rounded-lg text-white focus:outline-none focus:border-[#AA61FF]"
-            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddImage())}
-          />
-          <button
-            type="button"
-            onClick={handleAddImage}
-            className="px-4 py-2 bg-[#AA61FF] text-white rounded-lg hover:bg-[#8844FF] transition-colors"
-          >
-            +
-          </button>
+        <div className="space-y-2 mb-2">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newImage}
+              onChange={(e) => setNewImage(e.target.value)}
+              placeholder="Afbeelding URL"
+              className="flex-1 px-4 py-2 bg-[#0a0a1e] border border-[#AA61FF]/30 rounded-lg text-white focus:outline-none focus:border-[#AA61FF]"
+              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddImage())}
+            />
+            <button
+              type="button"
+              onClick={handleAddImage}
+              className="px-4 py-2 bg-[#AA61FF] text-white rounded-lg hover:bg-[#8844FF] transition-colors"
+            >
+              +
+            </button>
+          </div>
+          <label className="block px-4 py-2 bg-[#0a0a1e] border border-[#AA61FF]/30 rounded-lg text-white hover:bg-[#AA61FF]/10 transition-colors cursor-pointer text-center">
+            {uploading ? 'Uploaden...' : 'Upload Bestand'}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  handleFileUpload(file, false);
+                }
+              }}
+              disabled={uploading}
+            />
+          </label>
         </div>
         <div className="flex flex-wrap gap-2">
           {formData.images?.map((img, index) => (
@@ -252,6 +328,31 @@ export default function ProjectForm({ project, onSave, onCancel }: ProjectFormPr
           type="text"
           value={formData.link || ''}
           onChange={(e) => handleChange('link', e.target.value)}
+          className="w-full px-4 py-2 bg-[#0a0a1e] border border-[#AA61FF]/30 rounded-lg text-white focus:outline-none focus:border-[#AA61FF]"
+        />
+      </div>
+
+      {/* Figma Link */}
+      <div>
+        <label className="block text-white font-semibold mb-2">Figma Link</label>
+        <input
+          type="text"
+          value={formData.figmaLink || ''}
+          onChange={(e) => handleChange('figmaLink', e.target.value)}
+          placeholder="https://figma.com/file/..."
+          className="w-full px-4 py-2 bg-[#0a0a1e] border border-[#AA61FF]/30 rounded-lg text-white focus:outline-none focus:border-[#AA61FF]"
+        />
+        <p className="text-[#E0E0E0]/60 text-sm mt-1">Wordt alleen getoond als Figma in de technologieën staat</p>
+      </div>
+
+      {/* GitHub Link */}
+      <div>
+        <label className="block text-white font-semibold mb-2">GitHub Link</label>
+        <input
+          type="text"
+          value={formData.githubLink || ''}
+          onChange={(e) => handleChange('githubLink', e.target.value)}
+          placeholder="https://github.com/username/repo"
           className="w-full px-4 py-2 bg-[#0a0a1e] border border-[#AA61FF]/30 rounded-lg text-white focus:outline-none focus:border-[#AA61FF]"
         />
       </div>
@@ -328,6 +429,20 @@ export default function ProjectForm({ project, onSave, onCancel }: ProjectFormPr
         />
       </div>
 
+      {/* Status */}
+      <div>
+        <label className="block text-white font-semibold mb-2">Status</label>
+        <select
+          value={formData.status || 'completed'}
+          onChange={(e) => handleChange('status', e.target.value)}
+          className="w-full px-4 py-2 bg-[#0a0a1e] border border-[#AA61FF]/30 rounded-lg text-white focus:outline-none focus:border-[#AA61FF]"
+        >
+          <option value="completed">Voltooid</option>
+          <option value="in-progress">In ontwikkeling</option>
+          <option value="coming-soon">Binnenkort</option>
+        </select>
+      </div>
+
       {/* Colors */}
       <div>
         <label className="block text-white font-semibold mb-4">Kleuren</label>
@@ -391,4 +506,6 @@ export default function ProjectForm({ project, onSave, onCancel }: ProjectFormPr
     </form>
   );
 }
+
+
 

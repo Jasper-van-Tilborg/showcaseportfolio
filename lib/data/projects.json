@@ -13,7 +13,9 @@
       },
       "image": "/images/K-imprint logo.avif",
       "images": [
-        "/images/K-imprint logo.avif"
+        "/images/K-imprint logo.avif",
+        "/images/1762283938787-Dashboard_K-imprint.png",
+        "/images/1762283982778-image_2025-11-04_201942757.png"
       ],
       "link": "https://k-imprint.nl",
       "technologies": [
@@ -21,20 +23,24 @@
         "React",
         "TypeScript",
         "Tailwind CSS",
-        "Shopify"
+        "Figma",
+        "UI/UX Design"
       ],
       "role": {
-        "nl": "Full-Stack Development & Design",
-        "en": "Full-Stack Development & Design"
+        "nl": "Front-End Development & Design",
+        "en": "Frond-End Development & Design"
       },
-      "year": "2024",
+      "year": "2025",
+      "status": "in-progress",
       "colors": {
         "border": "#61554F",
         "background": "#D9C1B5",
         "title": "#0a0a0a",
         "description": "#1a1a1a",
-        "gradient": "#D9C1B5"
-      }
+        "gradient": "#D9C1B5",
+        "hoverOverlay": "rgba(170, 97, 255, 0.15)"
+      },
+      "figmaLink": "https://www.figma.com/design/i5WSQtecDh09BdlGCh8KXL/K-imprint?node-id=0-1&t=a6Mcf0M5T2rEbpyX-1"
     },
     {
       "id": 2,
@@ -62,13 +68,53 @@
         "nl": "UX/UI Design",
         "en": "UX/UI Design"
       },
-      "year": "2024",
+      "year": "2025",
+      "status": "completed",
       "colors": {
         "border": "#2a2a2a",
-        "background": "#0a0a0a",
+        "background": "#000000",
         "title": "#ffffff",
         "description": "#e0e0e0",
-        "gradient": "#0a0a0a"
+        "gradient": "#0a0a0a",
+        "hoverOverlay": "rgba(170, 97, 255, 0.2)"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Paturain Naturel",
+      "description": {
+        "nl": "Digitale campagne voor Paturain Naturel om het verse roomkaas product beter op de kaart te zetten in Nederland.",
+        "en": "Digital campaign for Paturain Naturel to better position the fresh cream cheese product in the Netherlands."
+      },
+      "longDescription": {
+        "nl": "Voor Paturain, een merk voor verse roomkaas, ontwikkelden we een digitaal campagneconcept om het product Paturain Naturel beter op de kaart te zetten in Nederland. De opdracht richtte zich op het creëren van een interactieve en visueel aantrekkelijke online ervaring, waarbij gebruikers op een leuke manier betrokken worden bij het merk. Het concept omvatte elementen zoals recepten, spellen en deelbare content om gebruikers actief te betrekken bij het merk. Het project omvatte gebruikersonderzoek, het ontwikkelen van wireframes en interactieve prototypes, en het uitwerken van een coherent campagneconcept dat visueel aantrekkelijk is en afgestemd op de boodschap van Paturain.",
+        "en": "For Paturain, a brand for fresh cream cheese, we developed a digital campaign concept to better position the Paturain Naturel product in the Netherlands. The assignment focused on creating an interactive and visually appealing online experience, where users are engaged with the brand in a fun way. The concept included elements such as recipes, games and shareable content to actively engage users with the brand. The project included user research, developing wireframes and interactive prototypes, and working out a coherent campaign concept that is visually appealing and aligned with Paturain's message."
+      },
+      "image": "/images/paturain.jpg",
+      "images": [
+        "/images/paturain.jpg"
+      ],
+      "link": "#",
+      "technologies": [
+        "Figma",
+        "UI/UX Design",
+        "Prototyping",
+        "User Research",
+        "Wireframing"
+      ],
+      "role": {
+        "nl": "UX/UI Design & Campaign Development",
+        "en": "UX/UI Design & Campaign Development"
+      },
+      "year": "2024",
+      "status": "completed",
+      "colors": {
+        "border": "#E8DCC8",
+        "background": "#ffffff",
+        "title": "#0a0a0a",
+        "description": "#1a1a1a",
+        "gradient": "#F5F0E8",
+        "hoverOverlay": "rgba(170, 97, 255, 0.15)"
       }
     }
   ]

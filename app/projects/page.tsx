@@ -5,71 +5,47 @@ import Header from '../components/Header';
 import Background from '../components/Background';
 import TextType from '../components/TextType';
 import FadeInOnScroll from '../components/FadeInOnScroll';
+import { Project } from '@/lib/types';
 
 type Language = 'nl' | 'en';
-
-interface Project {
-  id: number;
-  title: string;
-  description: {
-    nl: string;
-    en: string;
-  };
-  image?: string; // Path to project image
-  link?: string;
-  colors?: {
-    border: string;
-    background: string;
-    title: string;
-    description: string;
-    gradient: string;
-  };
-}
 
 export default function Projects() {
   const [language, setLanguage] = useState<Language>('nl');
   const [hasLoadedOnce, setHasLoadedOnce] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
   const [contentKey, setContentKey] = useState(0);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setHasLoadedOnce(true);
     setIsMounted(true);
+    fetchProjects();
   }, []);
 
   useEffect(() => {
     setContentKey(prev => prev + 1);
   }, [language]);
 
-  const projects: Project[] = [
-    {
-      id: 1,
-      title: 'K-imprint',
-      description: {
-        nl: 'Een Nederlands webshop platform voor gepersonaliseerde kleding en accessoires met lokaal design.',
-        en: 'A Dutch webshop platform for personalized clothing and accessories with local design.'
-      },
-      image: '/images/K-imprint logo.avif',
-      link: 'https://k-imprint.nl'
-    },
-    {
-      id: 2,
-      title: 'Quality Lodgings',
-      description: {
-        nl: 'UX redesign voor een luxe accommodatie platform met focus op gebruiksvriendelijkheid en moderne interface.',
-        en: 'UX redesign for a luxury accommodation platform with focus on user-friendliness and modern interface.'
-      },
-      image: '/images/logo-ql.jpg',
-      link: '#',
-      colors: {
-        border: '#2a2a2a',
-        background: '#0a0a0a',
-        title: '#ffffff',
-        description: '#e0e0e0',
-        gradient: '#0a0a0a'
-      }
-    },
-  ];
+  const fetchProjects = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/projects');
+      const data = await response.json();
+      setProjects(data.projects || []);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+      setProjects([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getProjectSlug = (project: Project) => {
+    if (project.id === 1) return 'k-imprint';
+    if (project.id === 2) return 'quality-lodgings';
+    return project.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  };
 
   return (
     <div className="min-h-screen text-white relative">
@@ -124,14 +100,24 @@ export default function Projects() {
               </div>
               </div>
 
-              {/* Projects Grid */}
-              {projects.map((project, index) => (
-                <FadeInOnScroll key={project.id} delay={index * 100} className="col-span-12 md:col-span-6">
-                  <div className="project-card group cursor-pointer">
-                    <a 
-                      href={`/projects/${project.id === 1 ? 'k-imprint' : 'quality-lodgings'}`}
-                      className="block"
-                    >
+              {/* Loading State */}
+              {loading ? (
+                <div className="col-span-12 text-center py-12">
+                  <p className="text-[#E0E0E0] text-lg">Laden...</p>
+                </div>
+              ) : projects.length === 0 ? (
+                <div className="col-span-12 text-center py-12">
+                  <p className="text-[#E0E0E0] text-lg">Geen projecten gevonden</p>
+                </div>
+              ) : (
+                /* Projects Grid */
+                projects.map((project, index) => (
+                  <FadeInOnScroll key={project.id} delay={index * 100} className="col-span-12 md:col-span-6">
+                    <div className="project-card group cursor-pointer">
+                      <a 
+                        href={`/projects/${getProjectSlug(project)}`}
+                        className="block"
+                      >
                       {/* Project Card */}
                       <div 
                         className="rounded-2xl overflow-hidden mb-6 border-2 bg-[#0a0a0a] h-[380px] flex flex-col"
@@ -223,7 +209,8 @@ export default function Projects() {
                     </a>
                   </div>
                 </FadeInOnScroll>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </main>

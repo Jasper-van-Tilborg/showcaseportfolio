@@ -37,7 +37,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-white relative">
-      <Background />
+      <Background showFootballField={true} />
       
       {/* Main Content Wrapper */}
       <div className="relative z-10">

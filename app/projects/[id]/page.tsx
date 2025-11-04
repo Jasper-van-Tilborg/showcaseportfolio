@@ -6,89 +6,9 @@ import Header from '../../components/Header';
 import Background from '../../components/Background';
 import TextType from '../../components/TextType';
 import FadeInOnScroll from '../../components/FadeInOnScroll';
+import { Project } from '@/lib/types';
 
 type Language = 'nl' | 'en';
-
-interface ProjectDetail {
-  id: string;
-  title: string;
-  description: {
-    nl: string;
-    en: string;
-  };
-  longDescription: {
-    nl: string;
-    en: string;
-  };
-  images: string[];
-  technologies: string[];
-  role: {
-    nl: string;
-    en: string;
-  };
-  year: string;
-  link?: string;
-  colors: {
-    border: string;
-    background: string;
-    title: string;
-    description: string;
-  };
-}
-
-const projectsData: { [key: string]: ProjectDetail } = {
-  'k-imprint': {
-    id: 'k-imprint',
-    title: 'K-imprint',
-    description: {
-      nl: 'Een Nederlands webshop platform voor gepersonaliseerde kleding en accessoires met lokaal design.',
-      en: 'A Dutch webshop platform for personalized clothing and accessories with local design.'
-    },
-    longDescription: {
-      nl: 'K-imprint is een volledig functionele webshop gebouwd met moderne webtechnologieën. Het platform biedt gebruikers de mogelijkheid om gepersonaliseerde kleding en accessoires te ontwerpen en te bestellen. Met een intuïtieve interface en real-time preview functionaliteit.',
-      en: 'K-imprint is a fully functional webshop built with modern web technologies. The platform offers users the ability to design and order personalized clothing and accessories. With an intuitive interface and real-time preview functionality.'
-    },
-    images: ['/images/K-imprint logo.avif'],
-    technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Shopify'],
-    role: {
-      nl: 'Full-Stack Development & Design',
-      en: 'Full-Stack Development & Design'
-    },
-    year: '2024',
-    link: 'https://k-imprint.nl',
-    colors: {
-      border: '#61554F',
-      background: '#D9C1B5',
-      title: '#0a0a0a',
-      description: '#1a1a1a'
-    }
-  },
-  'quality-lodgings': {
-    id: 'quality-lodgings',
-    title: 'Quality Lodgings',
-    description: {
-      nl: 'UX redesign voor een luxe accommodatie platform met focus op gebruiksvriendelijkheid en moderne interface.',
-      en: 'UX redesign for a luxury accommodation platform with focus on user-friendliness and modern interface.'
-    },
-    longDescription: {
-      nl: 'Quality Lodgings redesign project waarbij ik de volledige gebruikerservaring heb herontworpen. Focus lag op het verbeteren van de boekingsstroom en het creëren van een moderne, elegante interface die de premium uitstraling van het merk weerspiegelt.',
-      en: 'Quality Lodgings redesign project where I completely redesigned the user experience. Focus was on improving the booking flow and creating a modern, elegant interface that reflects the premium look and feel of the brand.'
-    },
-    images: ['/images/logo-ql.jpg'],
-    technologies: ['Figma', 'UI/UX Design', 'Prototyping', 'User Research'],
-    role: {
-      nl: 'UX/UI Design',
-      en: 'UX/UI Design'
-    },
-    year: '2024',
-    colors: {
-      border: '#2a2a2a',
-      background: '#0a0a0a',
-      title: '#ffffff',
-      description: '#e0e0e0'
-    }
-  }
-};
 
 export default function ProjectDetail() {
   const params = useParams();
@@ -97,18 +17,67 @@ export default function ProjectDetail() {
   const [isMounted, setIsMounted] = useState(false);
   const [contentKey, setContentKey] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setHasLoadedOnce(true);
     setIsMounted(true);
+    fetchProject();
   }, []);
 
   useEffect(() => {
     setContentKey(prev => prev + 1);
   }, [language]);
 
-  const projectId = params.id as string;
-  const project = projectsData[projectId];
+  const fetchProject = async () => {
+    try {
+      setLoading(true);
+      const resolvedParams = await params;
+      const projectSlug = resolvedParams.id as string;
+      
+      // Fetch all projects and find by slug
+      const response = await fetch('/api/projects');
+      const data = await response.json();
+      const projects: Project[] = data.projects || [];
+      
+      const foundProject = projects.find(p => {
+        const slug = p.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        // Also check for legacy slugs
+        if (p.id === 1 && projectSlug === 'k-imprint') return true;
+        if (p.id === 2 && projectSlug === 'quality-lodgings') return true;
+        return slug === projectSlug;
+      });
+      
+      setProject(foundProject || null);
+    } catch (error) {
+      console.error('Error fetching project:', error);
+      setProject(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen text-white relative">
+        <Background />
+        <div className="relative z-10">
+          <Header
+            language={language}
+            setLanguage={setLanguage}
+            hasLoadedOnce={hasLoadedOnce}
+            currentPage="projects"
+          />
+          <main className="pt-[150px] pb-20">
+            <div className="content-container text-center">
+              <p className="text-[#E0E0E0] text-lg">Laden...</p>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
 
   if (!project) {
     return (
@@ -168,22 +137,22 @@ export default function ProjectDetail() {
                     <div 
                       className="rounded-2xl overflow-hidden border-2 flex items-center justify-center p-12 aspect-square w-full relative"
                       style={{
-                        borderColor: project.colors.border,
-                        backgroundColor: project.colors.background
+                        borderColor: project.colors?.border || '#AA61FF',
+                        backgroundColor: project.colors?.background || '#1a1a2e'
                       }}
                     >
-                      {project.images[currentImageIndex] && (
+                      {(project.images || [])[currentImageIndex] && (
                         <img 
-                          src={project.images[currentImageIndex]} 
+                          src={(project.images || [])[currentImageIndex]} 
                           alt={`${project.title} ${currentImageIndex + 1}`}
                           className="max-w-full max-h-full object-contain transition-opacity duration-300"
                         />
                       )}
 
                       {/* Carousel Dots - Inside Image Box */}
-                      {project.images.length > 1 && (
+                      {(project.images || []).length > 1 && (
                         <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-10">
-                          {project.images.map((_, index) => (
+                          {(project.images || []).map((_, index) => (
                             <button
                               key={index}
                               onClick={() => setCurrentImageIndex(index)}
@@ -218,13 +187,13 @@ export default function ProjectDetail() {
                       <div 
                         className="rounded-2xl overflow-hidden border-2 flex items-center justify-center p-6 h-full"
                         style={{
-                          borderColor: project.colors.border,
-                          backgroundColor: project.colors.background
+                          borderColor: project.colors?.border || '#AA61FF',
+                          backgroundColor: project.colors?.background || '#1a1a2e'
                         }}
                       >
-                        {project.images[1] ? (
+                        {(project.images || [])[1] ? (
                           <img 
-                            src={project.images[1]} 
+                            src={(project.images || [])[1]} 
                             alt={`${project.title} 2`}
                             className="max-w-full max-h-full object-contain"
                           />
@@ -242,13 +211,13 @@ export default function ProjectDetail() {
                       <div 
                         className="rounded-2xl overflow-hidden border-2 flex items-center justify-center p-6 h-full"
                         style={{
-                          borderColor: project.colors.border,
-                          backgroundColor: project.colors.background
+                          borderColor: project.colors?.border || '#AA61FF',
+                          backgroundColor: project.colors?.background || '#1a1a2e'
                         }}
                       >
-                        {project.images[2] ? (
+                        {(project.images || [])[2] ? (
                           <img 
-                            src={project.images[2]} 
+                            src={(project.images || [])[2]} 
                             alt={`${project.title} 3`}
                             className="max-w-full max-h-full object-contain"
                           />
@@ -266,14 +235,14 @@ export default function ProjectDetail() {
                     {/* Bottom Row - 1 Full Width Image */}
                     <div 
                       className="rounded-2xl overflow-hidden border-2 flex items-center justify-center p-8 h-[calc(50%-12px)]"
-                      style={{
-                        borderColor: project.colors.border,
-                        backgroundColor: project.colors.background
-                      }}
-                    >
-                      {project.images[3] ? (
+                        style={{
+                          borderColor: project.colors?.border || '#AA61FF',
+                          backgroundColor: project.colors?.background || '#1a1a2e'
+                        }}
+                      >
+                        {(project.images || [])[3] ? (
                         <img 
-                          src={project.images[3]} 
+                          src={(project.images || [])[3]} 
                           alt={`${project.title} 4`}
                           className="max-w-full max-h-full object-contain"
                         />
@@ -316,10 +285,10 @@ export default function ProjectDetail() {
               {/* Left: Long Description - 6 columns */}
               <div className="col-span-12 lg:col-span-6">
                 <FadeInOnScroll delay={250}>
-                  <div className="text-[#E0E0E0] text-[18px] leading-relaxed h-[280px]">
+                    <div className="text-[#E0E0E0] text-[18px] leading-relaxed h-[280px]">
                     {isMounted ? (
                       <TextType 
-                        text={project.longDescription[language]}
+                        text={project.longDescription?.[language] || project.description[language]}
                         typingSpeed={10}
                         showCursor={false}
                         loop={false}
@@ -327,7 +296,7 @@ export default function ProjectDetail() {
                         as="span"
                       />
                     ) : (
-                      project.longDescription[language]
+                      project.longDescription?.[language] || project.description[language]
                     )}
                   </div>
                 </FadeInOnScroll>
@@ -343,7 +312,7 @@ export default function ProjectDetail() {
                         {language === 'nl' ? 'Rol' : 'Role'}
                       </h3>
                       <p className="text-[#E0E0E0] text-[16px]">
-                        {project.role[language]}
+                        {project.role?.[language] || '-'}
                       </p>
                     </div>
 
@@ -363,14 +332,14 @@ export default function ProjectDetail() {
                         {language === 'nl' ? 'Technologieën' : 'Technologies'}
                       </h3>
                       <div className="flex flex-wrap gap-2">
-                        {project.technologies.map((tech, index) => (
+                        {(project.technologies || []).map((tech, index) => (
                           <span 
                             key={index}
                             className="px-3 py-1 rounded-full text-[14px] font-medium"
                             style={{
-                              backgroundColor: project.colors.background,
-                              color: project.colors.title,
-                              border: `1px solid ${project.colors.border}`
+                              backgroundColor: project.colors?.background || '#1a1a2e',
+                              color: project.colors?.title || '#ffffff',
+                              border: `1px solid ${project.colors?.border || '#AA61FF'}`
                             }}
                           >
                             {tech}

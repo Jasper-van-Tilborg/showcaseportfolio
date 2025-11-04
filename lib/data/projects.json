@@ -1,0 +1,75 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "K-imprint",
+      "description": {
+        "nl": "Een Nederlands webshop platform voor gepersonaliseerde kleding en accessoires met lokaal design.",
+        "en": "A Dutch webshop platform for personalized clothing and accessories with local design."
+      },
+      "longDescription": {
+        "nl": "K-imprint is een volledig functionele webshop gebouwd met moderne webtechnologieën. Het platform biedt gebruikers de mogelijkheid om gepersonaliseerde kleding en accessoires te ontwerpen en te bestellen. Met een intuïtieve interface en real-time preview functionaliteit.",
+        "en": "K-imprint is a fully functional webshop built with modern web technologies. The platform offers users the ability to design and order personalized clothing and accessories. With an intuitive interface and real-time preview functionality."
+      },
+      "image": "/images/K-imprint logo.avif",
+      "images": [
+        "/images/K-imprint logo.avif"
+      ],
+      "link": "https://k-imprint.nl",
+      "technologies": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Shopify"
+      ],
+      "role": {
+        "nl": "Full-Stack Development & Design",
+        "en": "Full-Stack Development & Design"
+      },
+      "year": "2024",
+      "colors": {
+        "border": "#61554F",
+        "background": "#D9C1B5",
+        "title": "#0a0a0a",
+        "description": "#1a1a1a",
+        "gradient": "#D9C1B5"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Quality Lodgings",
+      "description": {
+        "nl": "UX redesign voor een luxe accommodatie platform met focus op gebruiksvriendelijkheid en moderne interface.",
+        "en": "UX redesign for a luxury accommodation platform with focus on user-friendliness and modern interface."
+      },
+      "longDescription": {
+        "nl": "Quality Lodgings redesign project waarbij ik de volledige gebruikerservaring heb herontworpen. Focus lag op het verbeteren van de boekingsstroom en het creëren van een moderne, elegante interface die de premium uitstraling van het merk weerspiegelt.",
+        "en": "Quality Lodgings redesign project where I completely redesigned the user experience. Focus was on improving the booking flow and creating a modern, elegant interface that reflects the premium look and feel of the brand."
+      },
+      "image": "/images/logo-ql.jpg",
+      "images": [
+        "/images/logo-ql.jpg"
+      ],
+      "link": "#",
+      "technologies": [
+        "Figma",
+        "UI/UX Design",
+        "Prototyping",
+        "User Research"
+      ],
+      "role": {
+        "nl": "UX/UI Design",
+        "en": "UX/UI Design"
+      },
+      "year": "2024",
+      "colors": {
+        "border": "#2a2a2a",
+        "background": "#0a0a0a",
+        "title": "#ffffff",
+        "description": "#e0e0e0",
+        "gradient": "#0a0a0a"
+      }
+    }
+  ]
+}
